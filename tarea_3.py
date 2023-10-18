@@ -8,8 +8,7 @@ SpeedUp = ----------------
 SpeedUp = 473 / 11
         = 43 
 
-Para calcular el speedup tomamos el tiempo total en que el escrip 1 y el script 2 se tardaron en procesar todo el video 
-mountain.mp4, contenido la carpetas videos.
+Para calcular el speedup tomamos el tiempo total en que el script 1 y el script 2 tardaron cada uno en procesar todo el video mountain.mp4, contenido la carpetas videos.
 """
 
 

@@ -3,6 +3,10 @@ El objetivo del laboratorio era realizar 2 filtros tipo Instagram. El primer fil
 
 **ADVERTENCIA**: para correr *tarea_3.py* puede que sea necesario tener Cython en el dispositivo
 
+## Autores: 
+- Cruz del Cid [CruzdelCid](https://github.com/CruzdelCid)
+- Daniel Behar [dan-behar](https://github.com/dan-behar)
+
 ## Directorios
 * imagenes: carpeta con 2 imágenes para probar los filtros
 * videos: video usado para probar los filtros. El video utilizado fue grabado por Stefano Rinaldo y cargado a [Pexels](https://www.pexels.com/es-es/video/imagenes-de-drones-de-la-cima-de-la-montana-2871916/)

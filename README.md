@@ -22,12 +22,11 @@ El objetivo del laboratorio era realizar 2 filtros tipo Instagram. El primer fil
 Parte del objetivo era calcular el Speedup entre la implementación de tarea_2.py y tarea_3.py
 Calculo del speedup:
 
-              t sharp
-SpeedUp = ----------------
-            t fast - sharp
+              
+SpeedUp = t sharp / (t fast - sharp)
 
 SpeedUp = 473 / 11
         = 43 
 
-Para calcular el speedup tomamos el tiempo total en que el escrip 1 y el script 2 se tardaron en procesar todo el video 
+Para calcular el speedup tomamos el tiempo total en que el script 1 y el script 2 tardaron cada uno en procesar todo el video 
 mountain.mp4, contenido la carpetas videos.

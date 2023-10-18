@@ -85,12 +85,12 @@ def threadBoth(source=0):
 
 if __name__ == '__main__':
 
-    filename = "videos/mountain.mp4"
-    src = filename
+    # filename = "videos/mountain.mp4"
+    # src = filename
 
     start_time = datetime.datetime.now()
 
-    # src = 0
+    src = 0
     
     noThreading(src)
     #threadBoth(src)

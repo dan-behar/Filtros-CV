@@ -1,6 +1,8 @@
 from video import CountsPerSec, VideoCaptureThread, ImShowThread
 import argparse
 import cv2 as cv
+import warnings
+warnings.filterwarnings('ignore')
 
 def pencil_sketch_col(img):
     #inbuilt function to create sketch effect in colour and greyscale

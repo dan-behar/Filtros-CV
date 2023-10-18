@@ -3,6 +3,9 @@ import argparse
 import cv2 as cv
 import numpy as np
 import cvlib
+import datetime
+import warnings
+warnings.filterwarnings('ignore')
 
 
 def sharpen(img):
@@ -24,68 +27,42 @@ def sharpener(img):
         f, c, capas = dimensions
 
     # Creación del kernel     
-    kernel = np.array([[-1, -1, -1], [-1, 9.5, -1], [-1, -1, -1]])
-
+    kernel = np.array([[-1, -1, -1], 
+                       [-1, 9.5, -1], 
+                       [-1, -1, -1]])
 
     # Aplicación del kernel
     if is_color == True: 
-
         for capa in range(capas): # Iteración capas
- 
             for i in range(1, f-1): # Iteracion de filas 
-
                 for j in range(1, c - 1): # Iteracion columnas
-
                     matriz = img[i-1:i+2, j-1:j+2, capa] # Corte de la matriz 
-
+                    
                     matriz = np.multiply(matriz, kernel) # Calculo del kernel 
 
                     pixel = matriz.sum() # Suma del pixel 
 
+                    # pixel = np.abs(pixel)
+
+                    if pixel < 0: 
+                        pixel = 0
+                    elif pixel > 255: 
+                        pixel = 255 
+                        
+
                     sharp_img[i, j, capa] = pixel # se guardan en la sharp_img 
 
 
-    # sharp_img = sharp_img.astype('uint8')
-                    
+    return sharp_img.astype(np.uint8)
 
-    # print("Shape:", img.shape)
-
-    # Transfomación a uint8
-    # if is_color == True: 
-
-    #     sharp_img = float64_to_uint8(sharp_img)
-        
-        # for capa in range(capas): # Iteración capas
-
-        #     print(np.var(sharp_img[:, :, capa]))
-            
-        #     sharp_img[:, :, capa] = float64_to_uint8(sharp_img[:, :, capa])
-
-        #     cvlib.imgview(sharp_img[:, :, capa])
-
-    # sharp_img = cv.normalize(sharp_img, None, 0, 255, cv.NORM_MINMAX) 
-    # sharp_img = cv.convertScaleAbs(sharp_img) 
-
-
-    # # Trasnform 
-    # if len(sharp_img.shape) == 3: 
-    #     print("Dimensiones",sharp_img.shape)
-    #     print("Image is color")
-
-    #     for i in range(3): 
-    #         print(sharp_img[:,:,i])
-
-    #         sharp_img[:,:,i] = float64_to_uint8(sharp_img[:,:,i])
-
-    #         print(sharp_img, "\n----")
-
-    return sharp_img
 
 def img_annotate(img, text, color=(0, 255, 0)):
     """ Annotate an image with text
     """
 
     img = sharpener(img)
+    # img = sharpen(img)
+    
 
     cv.putText(img, text,(10, 120), cv.FONT_HERSHEY_SIMPLEX, 3, color)
     return img
@@ -109,24 +86,54 @@ def noThreading(source=0):
         cv.imshow("NO_THREAD", frame)
         cps.increment()
 
+def threadBoth(source=0):
+    """
+    Dedicated thread for grabbing video frames with VideoGet object.
+    Dedicated thread for showing video frames with VideoShow object.
+    Main thread serves only to pass frames between VideoGet and
+    VideoShow objects/threads.
+    """
+
+    video_getter = VideoCaptureThread(source).start()
+    video_shower = ImShowThread(video_getter.frame,'CAPTURE AND WINDOW THREAD').start()
+    cps = CountsPerSec().start()
+
+    while True:
+        if video_getter.stopped or video_shower.stopped:
+            video_shower.stop()
+            video_getter.stop()
+            break
+
+        frame = video_getter.frame
+        fps = str(round(cps.freq(),2))
+        frame = img_annotate(frame, fps)
+        video_shower.frame = frame
+        cps.increment()
+
+
+
+
 if __name__ == '__main__':
 
-    # filename = "videos/maldives.mp4"
-    # src = filename
-    src = 0
+    filename = "videos/mountain.mp4"
+    src = filename
+
+    start_time = datetime.datetime.now()
+
+    #src = 0
     
     noThreading(src)
+    #threadBoth(src)
+
+    end_time = datetime.datetime.now()
+
+
+    print("\n\nStart Time: ",start_time)
+    print("End Time: ", end_time)
+    print("Diff Time:", (end_time - start_time).seconds, "seconds")
 
     #captureThread(src)
     #windowThread(src)
-    #threadBoth(src)
-
-
-# img = cv.imread("imagenes/panaderia.jpg",cv.IMREAD_COLOR) 
-# img = cv.cvtColor(img,cv.COLOR_BGR2RGB)
-# img = sharpen(img)
-# cvlib.imgview(img)
-
-
+    
 
 
